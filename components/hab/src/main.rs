@@ -142,6 +142,7 @@ fn start() -> Result<()> {
             match matches.subcommand() {
                 ("binlink", Some(m)) => try!(sub_pkg_binlink(m)),
                 ("build", Some(m)) => try!(sub_pkg_build(m)),
+                ("create", Some(m)) => try!(sub_pkg_create(m)),
                 ("exec", Some(m)) => try!(sub_pkg_exec(m, remaining_args)),
                 ("export", Some(m)) => try!(sub_pkg_export(m)),
                 ("hash", Some(m)) => try!(sub_pkg_hash(m)),
@@ -399,6 +400,11 @@ fn sub_pkg_build(m: &ArgMatches) -> Result<()> {
     let reuse = m.is_present("REUSE");
 
     command::pkg::build::start(plan_context, root, src, keys, reuse)
+}
+
+fn sub_pkg_create(m: &ArgMatches) -> Result<()> {
+    let cmd = m.value_of("PKG_NAME").unwrap();
+    command::pkg::create::start(cmd)
 }
 
 fn sub_pkg_exec(m: &ArgMatches, cmd_args: Vec<OsString>) -> Result<()> {
