@@ -103,33 +103,6 @@ pub mod build {
     }
 }
 
-pub mod create {
-    use std::path::PathBuf;
-
-    use error::Result;
-
-    pub fn start(package_name: &str) -> Result<()> {
-        println!("creating package {}", package_name);
-
-        // 0. create a new directory IF it does not already exist
-        // 1. create a plan.sh file from a template, possibly
-        //    using the current HAB_ORIGIN environment value
-
-        // output:
-        // hab pkg create foo
-        // ./foo
-        // ./foo/plan.sh
-        let mut path = PathBuf::from(".");
-        path.push(&package_name);
-        if path.is_dir() {
-                println!("DIRECTORY ALREADY EXISTS");
-        } else {
-                println!("DIRECTORY DOES NOT EXIST");
-        }
-        Ok(())
-    }
-}
-
 pub mod exec {
     use std::env;
     use std::ffi::OsString;

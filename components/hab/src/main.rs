@@ -138,11 +138,16 @@ fn start() -> Result<()> {
                 _ => unreachable!(),
             }
         }
+        ("plan", Some(matches)) => {
+            match matches.subcommand() {
+                ("create", Some(m)) => try!(sub_plan_create(m)),
+                _ => unreachable!(),
+            }
+        }
         ("pkg", Some(matches)) => {
             match matches.subcommand() {
                 ("binlink", Some(m)) => try!(sub_pkg_binlink(m)),
                 ("build", Some(m)) => try!(sub_pkg_build(m)),
-                ("create", Some(m)) => try!(sub_pkg_create(m)),
                 ("exec", Some(m)) => try!(sub_pkg_exec(m, remaining_args)),
                 ("export", Some(m)) => try!(sub_pkg_export(m)),
                 ("hash", Some(m)) => try!(sub_pkg_hash(m)),
@@ -402,11 +407,6 @@ fn sub_pkg_build(m: &ArgMatches) -> Result<()> {
     command::pkg::build::start(plan_context, root, src, keys, reuse)
 }
 
-fn sub_pkg_create(m: &ArgMatches) -> Result<()> {
-    let cmd = m.value_of("PKG_NAME").unwrap();
-    command::pkg::create::start(cmd)
-}
-
 fn sub_pkg_exec(m: &ArgMatches, cmd_args: Vec<OsString>) -> Result<()> {
     let ident = try!(PackageIdent::from_str(m.value_of("PKG_IDENT").unwrap()));
     let cmd = m.value_of("CMD").unwrap();
@@ -504,6 +504,11 @@ fn sub_pkg_verify(m: &ArgMatches) -> Result<()> {
     init();
 
     command::pkg::verify::start(&src, &default_cache_key_path(fs_root_path))
+}
+
+fn sub_plan_create(m: &ArgMatches) -> Result<()> {
+    let cmd = m.value_of("PLAN_NAME").unwrap();
+    command::plan::create::start(cmd)
 }
 
 fn sub_ring_key_export(m: &ArgMatches) -> Result<()> {

@@ -125,6 +125,15 @@ pub fn get() -> App<'static, 'static> {
                 )
             )
         )
+        (@subcommand plan =>
+            (about: "Commands relating to Habitat plans")
+            (aliases: &["pl", "plan"])
+            (@setting ArgRequiredElseHelp)
+            (@subcommand create =>
+                (about: "Creates a new plan")
+                (@arg PLAN_NAME: +required +takes_value "TODO")
+            )
+        )
         (@subcommand pkg =>
             (about: "Commands relating to Habitat packages")
             (aliases: &["p", "pk", "package"])
@@ -140,10 +149,6 @@ pub fn get() -> App<'static, 'static> {
                     "Sets the destination directory (default: /bin)")
             )
             (subcommand: sub_pkg_build())
-            (@subcommand create =>
-                (about: "Creates a new package")
-                (@arg PKG_NAME: +required +takes_value "TODO")
-            )
             (@subcommand exec =>
                 (about: "Executes a command using the 'PATH' context of an installed package")
                 (aliases: &["exe"])
